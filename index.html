@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IP Geolocation</title>
+</head>
+<body>
+    <input type="text" id="ip_input" placeholder="Insira o endereço IP">
+    <button onclick="buscarLocalizacao()">Localizar</button>
+    <div id="location_info"></div>
+    <script>
+
+        function buscarLocalizacao() {
+            const ipAddress = document.getElementById('ip_input').value;
+            fetch(`http://ip-api.com/json/${ipAddress}?fields=country,regionName,city,lat,lon,isp`)
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('location_info').innerHTML = `
+                        <p>País: ${data.country}</p>
+                        <p>Região: ${data.regionName}</p>
+                        <p>Cidade: ${data.city}</p>
+                        <p>Latitude: ${data.lat}</p>
+                        <p>Longitude: ${data.lon}</p>
+                        <p>Provedor: ${data.isp}</p>
+                    `;
+                })
+                .catch(error => {
+                    console.error('Ocorreu um erro ao obter a localização e o ISP:', error);
+                });
+        }
+
+    </script>
+</body>
+</html>
